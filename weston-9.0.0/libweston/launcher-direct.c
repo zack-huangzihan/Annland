@@ -301,7 +301,7 @@ launcher_direct_connect(struct weston_launcher **out, struct weston_compositor *
 	launcher->compositor = compositor;
 
 	if (strcmp("seat0", seat_id) == 0) {
-		if (setup_tty(launcher, tty) == -1) {
+		if (compositor->vt_switching && setup_tty(launcher, tty) == -1) {
 			free(launcher);
 			return -1;
 		}
@@ -317,13 +317,14 @@ static void
 launcher_direct_destroy(struct weston_launcher *launcher_base)
 {
 	struct launcher_direct *launcher = wl_container_of(launcher_base, launcher, base);
+	struct weston_compositor *compositor = launcher->compositor;
 
-	if (launcher->tty >= 0) {
+	if (compositor->vt_switching) {
 		launcher_direct_restore(&launcher->base);
 		wl_event_source_remove(launcher->vt_source);
-		close(launcher->tty);
+		if (launcher->tty >= 0)
+			close(launcher->tty);
 	}
-
 	free(launcher);
 }
 
