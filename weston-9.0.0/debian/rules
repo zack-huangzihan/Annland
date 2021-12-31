@@ -1,0 +1,38 @@
+#!/usr/bin/make -f
+
+override_dh_auto_configure:
+	dh_auto_configure -- -Dscreenshare=true \
+		-Dsystemd=true -Dsimple-dmabuf-drm=auto \
+		-Dpipewire=false
+
+override_dh_auto_test:
+	# the test suite does not 100% pass in headless mode
+	dh_auto_test || true
+
+override_dh_missing:
+	dh_missing --fail-missing -X.la
+
+override_dh_makeshlibs:
+	dh_makeshlibs -Xlibweston-9/ -- -c4 -ldebian/weston/usr/lib/$(DEB_TARGET_MULTIARCH)/weston/
+
+override_dh_shlibdeps:
+	dh_shlibdeps -O--buildsystem=meson -- -ldebian/weston/usr/lib/$(DEB_TARGET_MULTIARCH)/weston/
+
+override_dh_fixperms:
+	dh_fixperms -Xusr/bin/weston-launch
+
+# Workaround for https://gitlab.freedesktop.org/wayland/weston/issues/269
+override_dh_install:
+	sed -e '/libdir=/d' \
+	    -e '/includedir=/d' \
+	    -i debian/tmp/usr/share/pkgconfig/libweston-9-protocols.pc
+	dh_install
+
+%:
+	dh $@ --with quilt --buildsystem=meson
+
+# For maintainer use only, generate a tarball:
+gentarball: SOURCE=$(shell dpkg-parsechangelog|awk '/^Source:/ {print $$2}')
+gentarball: UV=$(shell dpkg-parsechangelog|awk '/^Version:/ {print $$2}'|sed 's/-.*$$//')
+gentarball:
+	git archive --format=tar upstream-unstable --prefix=$(SOURCE)-$(UV)/ | gzip -9 > ../$(SOURCE)_$(UV).orig.tar.gz

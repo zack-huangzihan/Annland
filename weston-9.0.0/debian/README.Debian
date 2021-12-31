@@ -1,0 +1,9 @@
+README for weston:
+------------------
+
+If you want to run weston under KMS (from a console, rather than from within X)
+as non-root, you should start it via the weston-launch wrapper.  For that to
+work, you either need to have logind running and have a local session
+registered, or your user needs to be member of the weston-launch group.
+
+ -- Laurent Bigonville <bigon@debian.org>, Sun, 11 Aug 2013 17:29:28 +0200

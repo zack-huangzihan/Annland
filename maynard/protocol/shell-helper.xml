@@ -1,0 +1,35 @@
+<protocol name="shell_helper">
+  <interface name="shell_helper" version="1">
+
+    <request name="move_surface">
+      <arg name="surface" type="object" interface="wl_surface"/>
+      <arg name="x" type="int"/>
+      <arg name="y" type="int"/>
+    </request>
+
+    <request name="add_surface_to_layer">
+      <arg name="new_surface" type="object" interface="wl_surface"/>
+      <arg name="existing_surface" type="object" interface="wl_surface"/>
+    </request>
+
+    <request name="set_panel">
+      <arg name="surface" type="object" interface="wl_surface"/>
+    </request>
+
+    <request name="slide_surface">
+      <arg name="surface" type="object" interface="wl_surface"/>
+      <arg name="x" type="int"/>
+      <arg name="y" type="int"/>
+    </request>
+
+    <request name="slide_surface_back">
+      <arg name="surface" type="object" interface="wl_surface"/>
+    </request>
+
+    <request name="curtain">
+      <arg name="surface" type="object" interface="wl_surface"/>
+      <arg name="show" type="int"/>
+    </request>
+
+  </interface>
+</protocol>

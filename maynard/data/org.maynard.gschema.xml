@@ -1,0 +1,14 @@
+<schemalist>
+  <schema id="org.maynard"
+          path="/org/maynard/"
+          gettext-domain="maynard">
+    <key name="favorites" type="as">
+      <default>[ 'gcalctool.desktop', 'libreoffice-writer.desktop', 'nautilus.desktop', 'weston-terminal.desktop', 'epiphany.desktop' ]</default>
+      <summary>List of desktop file IDs for favorite applications</summary>
+      <description>
+        The applications corresponding to these identifiers
+        will be displayed in the panel.
+      </description>
+    </key>
+  </schema>
+</schemalist>

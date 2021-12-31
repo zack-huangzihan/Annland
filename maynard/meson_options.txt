@@ -1,0 +1,4 @@
+option('enable-canterbury', type: 'feature', value: 'auto',
+       description: 'Whether to enable canterbury integration')
+option('enable-gnome-menu', type: 'feature', value: 'auto',
+       description: 'Whether to enable libgnome-menu integration')
