@@ -1,12 +1,23 @@
 Source: maynard
-Section: x11
 Priority: optional
 Maintainer: Walter Lozano <walter.lozano@collabora.com>
-Build-Depends: debhelper (>=11~), libweston-9-dev, meson, pkg-config, wayland-protocols, weston, libasound2-dev, libgnome-desktop-3-dev, libgtk-3-dev (>= 3.24.5-1co1), libpixman-1-dev, libwayland-dev
+Build-Depends: debhelper (>=11~),
+               libasound2-dev,
+               libgnome-desktop-3-dev,
+               libgnome-menu-3-dev,
+               libgtk-3-dev (>= 3.24.5-1co1),
+               libpixman-1-dev,
+               libwayland-dev,
+               libweston-9-dev,
+               meson,
+               pkg-config,
+               wayland-protocols,
+               weston
 Standards-Version: 4.1.4
 
 Package: maynard
 Architecture: any
 Multi-Arch: foreign
 Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: gnome-menus
 Description: desktop implementation for the weston

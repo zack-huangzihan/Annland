@@ -66,11 +66,6 @@ dep_wayland_server = dependency('wayland-server', version: '>= 1.12.0')
 dep_wayland_client = dependency('wayland-client', version: '>= 1.12.0')
 dep_weston = dependency('weston')
 
-dep_canterbury = dependency('canterbury-platform-0', required: get_option('enable-canterbury'))
-if dep_canterbury.found()
-    config_h.set('HAVE_CANTERBURY', '1')
-endif
-
 dep_gnome_menu = dependency('libgnome-menu-3.0', required: get_option('enable-gnome-menu'))
 if dep_gnome_menu.found()
     config_h.set('HAVE_GNOME_MENU', '1')

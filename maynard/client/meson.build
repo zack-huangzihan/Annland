@@ -30,7 +30,6 @@ srcs_maynard = [
 
 deps_maynard = [
     dep_alsa,
-    dep_canterbury,
     dep_gnome_desktop,
     dep_gnome_menu,
     dep_gtk,

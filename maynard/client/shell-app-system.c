@@ -8,9 +8,6 @@
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
 #include <gmenu-tree.h>
 #endif
-#ifdef HAVE_CANTERBURY
-#include <canterbury/canterbury-platform.h>
-#endif
 
 #include <gio/gio.h>
 
@@ -27,9 +24,6 @@ struct _ShellAppSystemPrivate {
 #ifdef HAVE_GNOME_MENU
   GMenuTree *apps_tree;
 #endif
-#ifdef HAVE_CANTERBURY
-  CbyEntryPointIndex *entry_point_index;
-#endif
 
   GHashTable *id_to_info;
 };
@@ -39,25 +33,11 @@ struct _ShellAppInfo
 #ifdef HAVE_GNOME_MENU
   GAppInfo *gapp_info;
 #endif
-#ifdef HAVE_CANTERBURY
-  CbyEntryPoint *entry_point;
-#endif
 };
 
 static void shell_app_system_finalize (GObject *object);
 #ifdef HAVE_GNOME_MENU
 static void on_apps_tree_changed_cb (GMenuTree *tree, gpointer user_data);
-#endif
-#ifdef HAVE_CANTERBURY
-static void on_entry_point_index_added_cb (CbyEntryPointIndex *entry_point_index,
-                                           CbyEntryPoint *entry_point,
-                                           gpointer user_data);
-static void on_entry_point_index_removed_cb (CbyEntryPointIndex *entry_point_index,
-                                             CbyEntryPoint *entry_point,
-                                             gpointer user_data);
-static void on_entry_point_index_changed_cb (CbyEntryPointIndex *entry_point_index,
-                                             CbyEntryPoint *entry_point,
-                                             gpointer user_data);
 #endif
 
 G_DEFINE_TYPE_WITH_PRIVATE(ShellAppSystem, shell_app_system, G_TYPE_OBJECT);
@@ -72,24 +52,11 @@ shell_app_info_new_from_app_info (GAppInfo *gapp_info)
 }
 #endif
 
-#ifdef HAVE_CANTERBURY
-static ShellAppInfo *
-shell_app_info_new_from_entry_point (CbyEntryPoint *entry_point)
-{
-  ShellAppInfo *info = g_new0 (ShellAppInfo, 1);
-  info->entry_point = g_object_ref (entry_point);
-  return info;
-}
-#endif
-
 static void
 shell_app_info_free (ShellAppInfo *info)
 {
 #ifdef HAVE_GNOME_MENU
   g_object_unref (info->gapp_info);
-#endif
-#ifdef HAVE_CANTERBURY
-  g_object_unref (info->entry_point);
 #endif
   g_free (info);
 }
@@ -126,25 +93,6 @@ shell_app_system_init (ShellAppSystem *self)
 
   on_apps_tree_changed_cb (priv->apps_tree, self);
 #endif
-#ifdef HAVE_CANTERBURY
-  g_autoptr (CbyComponentIndex) component_index = NULL;
-  g_autoptr (GPtrArray) entry_points = NULL;
-
-  component_index = cby_component_index_new (CBY_COMPONENT_INDEX_FLAGS_NONE, NULL);
-  priv->entry_point_index = cby_entry_point_index_new (component_index);
-  g_signal_connect (priv->entry_point_index, "added",
-      G_CALLBACK (on_entry_point_index_added_cb), self);
-  g_signal_connect (priv->entry_point_index, "removed",
-      G_CALLBACK (on_entry_point_index_removed_cb), self);
-  g_signal_connect (priv->entry_point_index, "changed",
-      G_CALLBACK (on_entry_point_index_changed_cb), self);
-
-  entry_points = cby_entry_point_index_get_entry_points (priv->entry_point_index);
-  for (uint i = 0; i < entry_points->len; i++) {
-    CbyEntryPoint *entry_point = g_ptr_array_index (entry_points, i);
-    on_entry_point_index_added_cb (priv->entry_point_index, entry_point, self);
-  }
-#endif
 }
 
 static void
@@ -155,9 +103,6 @@ shell_app_system_finalize (GObject *object)
 
 #ifdef HAVE_GNOME_MENU
   g_object_unref (priv->apps_tree);
-#endif
-#ifdef HAVE_CANTERBURY
-  g_object_unref (priv->entry_point_index);
 #endif
 
   g_hash_table_destroy (priv->id_to_info);
@@ -285,47 +230,6 @@ on_apps_tree_changed_cb (GMenuTree *tree,
 }
 #endif
 
-#ifdef HAVE_CANTERBURY
-static void
-on_entry_point_index_added_cb (CbyEntryPointIndex *entry_point_index,
-                               CbyEntryPoint *entry_point,
-                               gpointer user_data)
-{
-  ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
-
-  if (cby_entry_point_should_show (entry_point)) {
-    g_hash_table_insert (self->priv->id_to_info,
-        g_strdup (cby_entry_point_get_id (entry_point)),
-        shell_app_info_new_from_entry_point (entry_point));
-    g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
-  }
-}
-
-static void
-on_entry_point_index_removed_cb (CbyEntryPointIndex *entry_point_index,
-                                 CbyEntryPoint *entry_point,
-                                 gpointer user_data)
-{
-  ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
-
-  if (g_hash_table_contains (self->priv->id_to_info, cby_entry_point_get_id (entry_point))) {
-    g_hash_table_remove (self->priv->id_to_info, cby_entry_point_get_id (entry_point));
-    g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
-  }
-}
-
-static void
-on_entry_point_index_changed_cb (CbyEntryPointIndex *entry_point_index,
-                                 CbyEntryPoint *entry_point,
-                                 gpointer user_data)
-{
-  ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
-
-  if (g_hash_table_contains (self->priv->id_to_info, cby_entry_point_get_id (entry_point)))
-    g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
-}
-#endif
-
 /**
  * shell_app_system_get_default:
  *
@@ -362,10 +266,6 @@ shell_app_info_get_id (ShellAppInfo *info)
   if (info->gapp_info)
     return g_app_info_get_id (info->gapp_info);
 #endif
-#ifdef HAVE_CANTERBURY
-  if (info->entry_point)
-    return cby_entry_point_get_id (info->entry_point);
-#endif
   return NULL;
 }
 
@@ -375,10 +275,6 @@ shell_app_info_get_display_name (ShellAppInfo *info)
 #ifdef HAVE_GNOME_MENU
   if (info->gapp_info)
   return g_app_info_get_display_name (info->gapp_info);
-#endif
-#ifdef HAVE_CANTERBURY
-  if (info->entry_point)
-    return cby_entry_point_get_display_name (info->entry_point);
 #endif
   return NULL;
 }
@@ -390,10 +286,6 @@ shell_app_info_get_icon (ShellAppInfo *info)
   if (info->gapp_info)
     return g_app_info_get_icon (info->gapp_info);
 #endif
-#ifdef HAVE_CANTERBURY
-  if (info->entry_point)
-    return cby_entry_point_get_icon (info->entry_point);
-#endif
   return NULL;
 }
 
@@ -403,10 +295,5 @@ shell_app_info_launch (ShellAppInfo *info)
 #ifdef HAVE_GNOME_MENU
   if (info->gapp_info)
     g_app_info_launch (info->gapp_info, NULL, NULL, NULL);
-#endif
-#ifdef HAVE_CANTERBURY
-  if (info->entry_point)
-    cby_entry_point_activate_async (info->entry_point,
-        NULL, NULL, NULL, NULL);
 #endif
 }
