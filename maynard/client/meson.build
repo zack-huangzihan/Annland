@@ -59,7 +59,7 @@ deps_shell_helper = [
 ]
 
 plugin_shell_helper = shared_library(
-    'shell-helper',
+    'maynard-shell-helper',
     srcs_shell_helper,
     include_directories: include_directories('..'),
     dependencies: deps_shell_helper,

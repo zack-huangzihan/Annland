@@ -1,2 +1,1 @@
 clock: remove GtkRevealers and replace with a GtkStack
-launcher-grid: use GtkFlowGrid

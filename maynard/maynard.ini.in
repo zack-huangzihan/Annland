@@ -1,7 +1,7 @@
 [core]
 backend=drm-backend.so
 shell=desktop-shell.so
-modules=/usr/local/lib/aarch64-linux-gnu/weston/shell-helper.so
+modules=@libdir@/weston/maynard-shell-helper.so
 # Allow running without input devices
 require-input=false
 
@@ -24,9 +24,12 @@ repaint-window=-1
 # clock-format=seconds
 
 # Disable screen locking
-
 locking=false
-client=/usr/local/libexec/maynard
+#focus-animation=dim-layer
+#animation=zoom
+
+client=@libexecdir@/maynard
+always-maximized=true
 #focus-animation=dim-layer
 #animation=zoom
 

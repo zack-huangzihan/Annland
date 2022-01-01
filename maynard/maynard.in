@@ -7,13 +7,15 @@ DEFAULT_BACKGROUND=/usr/share/weston/background.png
 
 nested=
 display_server=
+config_file=$DATADIR/maynard.ini
 
 usage()
 {
   echo "usage: $0 [OPTION...]"
   echo
-  echo "    -n, --nested              Run as nested compositor"
-  echo "    -d, --display-server      Run as a full display server, rather than nested (default)"
+  echo "    -n, --nested              Run as nested compositor (default)"
+  echo "    -d, --display-server      Run as a full display server, rather than nested"
+  echo "    -c, --config FILE         Config file to load, defaults to maynard.ini"
   echo "    -h, --help                Display this help and exit"
 }
 
@@ -22,6 +24,9 @@ while [ "$1" != "" ]; do
         -d | --display-server ) display_server=true
                                 ;;
         -n | --nested )         nested=true
+                                ;;
+        -c | --config )         shift
+                                config_file=$1
                                 ;;
         -h | --help )           usage
                                 exit
@@ -45,12 +50,9 @@ if [ -z "${MAYNARD_BACKGROUND+_}" -a \
     export MAYNARD_BACKGROUND="$DEFAULT_BACKGROUND"
 fi
 
-echo "display server: $display_server"
-echo "nested: $nested"
-
 if [ "x$display_server" = "xtrue" ]; then
-    weston-launch -- --config $DATADIR/maynard.ini
+    weston-launch -- --config $config_file
 else
     # default as nested
-    weston --config $DATADIR/maynard.ini
+    weston --config $config_file
 fi

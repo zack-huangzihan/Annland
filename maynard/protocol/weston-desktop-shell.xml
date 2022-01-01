@@ -114,6 +114,9 @@
       <arg name="position" type="uint"/>
     </request>
 
+    <request name="toggle_exposay">
+      <arg name="seat" type="object" interface="wl_seat"/>
+    </request>
   </interface>
 
   <interface name="weston_screensaver" version="1">

@@ -19,6 +19,7 @@
     background-image: none;
     background-color: alpha(#6d6d6d, 0.8);
     color: white;
+    box-shadow: none;
 }
 
 .maynard-audio {
@@ -38,6 +39,7 @@
     background-image: none;
     background-color: alpha(#b4b4b4, 0.8);
     color: white;
+    box-shadow: none;
 }
 
 .maynard-apps {
@@ -56,6 +58,7 @@
     background-image: none;
     background-color: alpha(black, 0.2);
     color: white;
+    box-shadow: none;
 }
 
 .maynard-clock {
@@ -63,21 +66,32 @@
     color: white;
 }
 
-.maynard-grid {
+.maynard-launcher {
     background-color: alpha(black, 0.6);
 }
 
-.maynard-grid-item {
-    background-color: alpha(black, 0.6);
-    color: white;
+/* Remove dotted lines from scrolled window */
+/* .maynard-launcher-scrolled-window undershoot.top, undershoot.right, undershoot.bottom, undershoot.left { background-image: none; } */
+/* .maynard-launcher-scrolled-window overshoot.top, overshoot.right, overshoot.bottom, overshoot.left { background-image: none; } */
+
+.maynard-launcher-scrolled-window {
+    background-color: transparent;
+}
+
+.maynard-launcher-icon-view {
     font-family: Droid Sans;
     font-size: 12px;
-    border-style: solid;
-    border-color: #6d6d6d;
-    border-width: 1px;
-    border-radius: 1px;
+    border-color: transparent;
+    border-radius: 4px;
+    background-image: none;
+    background-color: transparent;
+    color: white;
 }
 
-.maynard-grid-label {
-    background-color: #929292;
+.maynard-launcher-icon-view:hover {
+    border-color: transparent;
+    border-radius: 4px;
+    background-image: none;
+    background-color: alpha(white, 0.2);
+    color: white;
 }

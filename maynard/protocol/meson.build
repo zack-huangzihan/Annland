@@ -7,6 +7,7 @@ dep_wp = dependency('wayland-protocols')
 dir_wp_base = dep_wp.get_pkgconfig_variable('pkgdatadir')
 
 generated_protocols = [
+    [ 'input-method', 'v1' ],
     [ 'shell-helper', 'internal' ],
     [ 'weston-desktop-shell', 'internal' ],
 ]

@@ -56,13 +56,14 @@ add_project_arguments('-DGETTEXT_PACKAGE=' + gettext_package, language: 'c')
 
 dep_alsa = dependency('alsa')
 dep_gnome_desktop = dependency('gnome-desktop-3.0')
-dep_gtk = dependency('gtk+-3.0', version: '>= 3.10')
+dep_gtk = dependency('gtk+-3.0', version: '>= 3.16')
 dep_gtk_wayland = dependency('gtk+-wayland-3.0')
 dep_libm = cc.find_library('m')
 dep_libweston = dependency('libweston-9')
 dep_pixman = dependency('pixman-1', version: '>= 0.25.2')
 dep_wayland_server = dependency('wayland-server', version: '>= 1.12.0')
 dep_wayland_client = dependency('wayland-client', version: '>= 1.12.0')
+dep_weston = dependency('weston')
 
 dep_canterbury = dependency('canterbury-platform-0', required: get_option('enable-canterbury'))
 if dep_canterbury.found()
@@ -99,7 +100,8 @@ maynard_ini = configure_file(
 
 subdir('data')
 subdir('protocol')
-subdir('shell')
+subdir('desktop-shell')
+subdir('client')
 subdir('po')
 
 configure_file(output: 'config.h', install: false, configuration: config_h)

@@ -63,6 +63,7 @@ struct desktop {
   struct element *background;
   struct element *panel;
   struct element *curtain;
+  struct element *grab;
   struct element *launcher_grid;
   struct element *clock;
 
@@ -84,7 +85,6 @@ static gboolean
 connect_enter_leave_signals (gpointer data)
 {
   struct desktop *desktop = data;
-  GList *l;
 
   g_signal_connect (desktop->panel->window, "enter-notify-event",
       G_CALLBACK (panel_window_enter_cb), desktop);
@@ -121,8 +121,8 @@ shell_configure (struct desktop *desktop,
   gtk_window_resize (GTK_WINDOW (desktop->panel->window),
       MAYNARD_PANEL_WIDTH, window_height);
 
-  maynard_launcher_calculate (MAYNARD_LAUNCHER (desktop->launcher_grid->window),
-      &grid_width, &grid_height, NULL);
+  grid_width = width - MAYNARD_PANEL_WIDTH;
+  grid_height = height;
   gtk_widget_set_size_request (desktop->launcher_grid->window,
       grid_width, grid_height);
 
@@ -138,7 +138,7 @@ shell_configure (struct desktop *desktop,
   shell_helper_move_surface (desktop->helper,
       desktop->launcher_grid->surface,
       - grid_width,
-      ((height - window_height) / 2) + MAYNARD_CLOCK_HEIGHT);
+      ((height - window_height) / 2));
 
   weston_desktop_shell_desktop_ready (desktop->wshell);
 
@@ -242,7 +242,7 @@ volume_changed_cb (MaynardClock *clock,
       MAYNARD_PANEL (desktop->panel->window), icon_name);
 }
 
-static GtkWidget *
+static void
 clock_create (struct desktop *desktop)
 {
   struct element *clock;
@@ -769,33 +769,28 @@ static const struct wl_registry_listener registry_listener = {
 
 static void grab_surface_create(struct desktop *desktop)
 {
-
-  struct wl_surface *s;
-
   GdkWindow *gdk_window;
-  struct element *curtain;
+  struct element *grab;
 
-  curtain = malloc (sizeof *curtain);
-  memset (curtain, 0, sizeof *curtain);
+  grab = malloc (sizeof *grab);
+  memset (grab, 0, sizeof *grab);
 
-  curtain->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  grab->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-  gtk_window_set_title (GTK_WINDOW (curtain->window), "maynard2");
-  gtk_window_set_decorated (GTK_WINDOW (curtain->window), FALSE);
-  gtk_widget_set_size_request (curtain->window, 8192, 8192);
-  gtk_widget_realize (curtain->window);
+  gtk_window_set_title (GTK_WINDOW (grab->window), "maynard2");
+  gtk_window_set_decorated (GTK_WINDOW (grab->window), FALSE);
+  gtk_widget_set_size_request (grab->window, 8192, 8192);
+  gtk_widget_realize (grab->window);
 
-  gdk_window = gtk_widget_get_window (curtain->window);
+  gdk_window = gtk_widget_get_window (grab->window);
   gdk_wayland_window_set_use_custom_surface (gdk_window);
 
-  curtain->surface = gdk_wayland_window_get_wl_surface (gdk_window);
+  grab->surface = gdk_wayland_window_get_wl_surface (gdk_window);
 
-  desktop->curtain = curtain;
+  desktop->grab = grab;
 
-  gtk_widget_show_all (curtain->window);
-  weston_desktop_shell_set_grab_surface(desktop->wshell, curtain->surface);
-
-
+  gtk_widget_show_all (grab->window);
+  weston_desktop_shell_set_grab_surface(desktop->wshell, grab->surface);
 }
 
 int
