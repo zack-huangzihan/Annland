@@ -1,59 +1,33 @@
+@define-color indicator_inactive shade(white, 0.85);
+@define-color indicator_hover white;
+
+/* Panel */
 .maynard-panel {
     background-color: alpha(black, 0.7);
 }
 
-.maynard-system {
-    border: none;
-    border-image: none;
-    border-radius: 0px;
-    background-image: none;
-    background-color: #6d6d6d;
-    padding: 13px;
-    color: #fcfcfc;
+.maynard-panel-box {
+    margin: 4px;
 }
 
-.maynard-system:hover {
-    border: none;
-    border-image: none;
-    border-radius: 0px;
-    background-image: none;
-    background-color: alpha(#6d6d6d, 0.8);
-    color: white;
-    box-shadow: none;
+.maynard-panel-separator {
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
-.maynard-audio {
-    border: none;
-    border-image: none;
-    border-radius: 0px;
-    background-image: none;
-    background-color: #b4b4b4;
-    color: #fcfcfc;
-    padding: 13px;
-}
-
-.maynard-audio:hover {
-    border: none;
-    border-image: none;
-    border-radius: 0px;
-    background-image: none;
-    background-color: alpha(#b4b4b4, 0.8);
-    color: white;
-    box-shadow: none;
-}
-
+/* Favorites */
 .maynard-apps {
     border: none;
     border-image: none;
-    border-radius: 0px;
+    border-radius: 4px;
     background-image: none;
-    background-color: alpha(black, 0.2);
+    background-color: transparent;
     color: #bebebe;
 }
 
 .maynard-apps:hover {
     border: none;
-    border-radius: 0px;
+    border-radius: 4px;
     border-image: none;
     background-image: none;
     background-color: alpha(black, 0.2);
@@ -61,9 +35,24 @@
     box-shadow: none;
 }
 
-.maynard-clock {
-    background-color: #929292;
+/* Launcher */
+.maynard-launcher-button {
+    border: none;
+    border-image: none;
+    border-radius: 4px;
+    background-image: none;
+    background-color: transparent;
+    color: #bebebe;
+}
+
+.maynard-launcher-button:hover {
+    border: none;
+    border-radius: 4px;
+    border-image: none;
+    background-image: none;
+    background-color: alpha(#929292, 0.5);
     color: white;
+    box-shadow: none;
 }
 
 .maynard-launcher {
@@ -94,4 +83,63 @@
     background-image: none;
     background-color: alpha(white, 0.2);
     color: white;
+}
+
+/* Indicators */
+.maynard-indicators-menu {
+    background-color: alpha(black, 0.6);
+    padding: 20px;
+}
+
+.maynard-indicators-menu-separator {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.maynard-indicators-box {
+}
+
+.maynard-indicators-box-indicator:hover {
+    background-color: blue;
+}
+
+.maynard-indicator {
+    color: @indicator_inactive;
+    padding: 12px;
+}
+
+.maynard-indicator:hover {
+    color: @indicator_hover;
+}
+
+.maynard-clock-indicator * {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.maynard-clock-indicator-menu-item-weekday {
+    font-family: Droid Sans;
+    font-size: 14px;
+    color: white;
+}
+
+.maynard-clock-indicator-menu-item-date {
+    font-family: Droid Sans;
+    font-size: 22px;
+    color: white;
+}
+
+.maynard-volume-indicator * {
+}
+
+.maynard-volume-indicator-menu-item {
+}
+
+.maynard-volume-indicator-menu-item-icon {
+}
+
+/* TODO - theme scale widgets */
+.maynard-volume-indicator-menu-item-scale {
+    padding: 0px;
+    padding-left: 12px;
 }

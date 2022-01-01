@@ -46,7 +46,6 @@ favorite_clicked (GtkButton *button,
     MaynardFavorites *self)
 {
   ShellAppInfo *info = g_object_get_data (G_OBJECT(button), "info");
-  GError *error = NULL;
 
   shell_app_info_launch (info);
   g_signal_emit (self, signals[APP_LAUNCHED], 0);
@@ -57,7 +56,7 @@ add_favorite (MaynardFavorites *self,
     const gchar *favorite)
 {
   ShellAppInfo *info;
-  GtkWidget *button, *image;
+  GtkWidget *button;
   GIcon *icon;
 
   info = shell_app_system_get_app_info (shell_app_system_get_default(), favorite);
@@ -89,7 +88,7 @@ favorites_changed (GSettings *settings,
     MaynardFavorites *self)
 {
   gchar **favorites = g_settings_get_strv (settings, key);
-  gint i;
+  guint i;
 
   /* Remove all favorites first */
   gtk_container_foreach (GTK_CONTAINER (self), remove_favorite, NULL);

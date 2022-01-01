@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Collabora Ltd.
+ * Copyright (C) 2014, 2019 Collabora Ltd.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -15,8 +15,6 @@
  * License along with this program; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
- *
- * Author: Jonny Lamb <jonny.lamb@collabora.co.uk>
  */
 
 #ifndef __MAYNARD_PANEL_H__
@@ -47,24 +45,10 @@ struct MaynardPanelClass
   GtkWindowClass parent_class;
 };
 
-#define MAYNARD_PANEL_WIDTH 56
-#define MAYNARD_PANEL_HEIGHT_RATIO 1
-
-typedef enum {
-  MAYNARD_PANEL_BUTTON_NONE,
-  MAYNARD_PANEL_BUTTON_SYSTEM,
-  MAYNARD_PANEL_BUTTON_VOLUME
-} MaynardPanelButton;
-
 GType maynard_panel_get_type (void) G_GNUC_CONST;
 
 GtkWidget * maynard_panel_new (void);
 
-void maynard_panel_set_expand (MaynardPanel *self, gboolean expand);
-
-void maynard_panel_show_previous (MaynardPanel *self, MaynardPanelButton button);
-
-void maynard_panel_set_volume_icon_name (MaynardPanel *self,
-    const gchar *icon_name);
+GtkWidget * maynard_panel_get_indicators_menu (MaynardPanel *self);
 
 #endif /* __MAYNARD_PANEL_H__ */

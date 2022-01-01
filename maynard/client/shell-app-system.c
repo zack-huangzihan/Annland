@@ -140,7 +140,7 @@ shell_app_system_init (ShellAppSystem *self)
       G_CALLBACK (on_entry_point_index_changed_cb), self);
 
   entry_points = cby_entry_point_index_get_entry_points (priv->entry_point_index);
-  for (int i = 0; i < entry_points->len; i++) {
+  for (uint i = 0; i < entry_points->len; i++) {
     CbyEntryPoint *entry_point = g_ptr_array_index (entry_points, i);
     on_entry_point_index_added_cb (priv->entry_point_index, entry_point, self);
   }

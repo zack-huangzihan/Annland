@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Collabora Ltd.
+ * Copyright (C) 2013-2014, 2019 Collabora Ltd.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -15,16 +15,12 @@
  * License along with this program; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
- *
- * Authors: Emilio Pozuelo Monfort <emilio.pozuelo@collabora.co.uk>
- *          Jonny Lamb <jonny.lamb@collabora.co.uk>
  */
 
 #include "config.h"
 
 #include "launcher.h"
 
-#include "clock.h"
 #include "panel.h"
 #include "shell-app-system.h"
 

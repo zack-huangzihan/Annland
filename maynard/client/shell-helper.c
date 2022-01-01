@@ -55,7 +55,6 @@ shell_helper_move_surface(struct wl_client *client,
 			  int32_t x,
 			  int32_t y)
 {
-	struct shell_helper *helper = wl_resource_get_user_data(resource);
 	struct weston_surface *surface =
 		wl_resource_get_user_data(surface_resource);
 	struct weston_view *view;
@@ -67,6 +66,7 @@ shell_helper_move_surface(struct wl_client *client,
 
 	weston_view_set_position(view, x, y);
 	weston_view_update_transform(view);
+	weston_compositor_schedule_repaint(surface->compositor);
 }
 
 static void
@@ -90,13 +90,11 @@ shell_helper_add_surface_to_layer(struct wl_client *client,
 				  struct wl_resource *new_surface_resource,
 				  struct wl_resource *existing_surface_resource)
 {
-	struct shell_helper *helper = wl_resource_get_user_data(resource);
 	struct weston_surface *new_surface =
 		wl_resource_get_user_data(new_surface_resource);
 	struct weston_surface *existing_surface =
 		wl_resource_get_user_data(existing_surface_resource);
 	struct weston_view *new_view, *existing_view, *next;
-	struct wl_layer *layer;
 
 	if (new_surface->committed) {
 		wl_resource_post_error(new_surface_resource,
@@ -309,7 +307,6 @@ shell_helper_slide_surface_back(struct wl_client *client,
 	struct shell_helper *helper = wl_resource_get_user_data(resource);
 	struct weston_surface *surface =
 		wl_resource_get_user_data(surface_resource);
-	struct weston_view *view;
 	int found = 0;
 	struct slide *slide;
 
@@ -354,10 +351,6 @@ shell_curtain_create_view(struct shell_helper *helper,
 
 	return view;
 }
-
-static void
-curtain_done_hide(struct weston_view_animation *animation,
-		  void *data);
 
 static void
 curtain_fade_done(struct weston_view_animation *animation,
