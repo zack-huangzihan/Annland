@@ -17,6 +17,7 @@ dir_data = join_paths(dir_prefix, get_option('datadir'))
 dir_lib = join_paths(dir_prefix, get_option('libdir'))
 dir_libexec = join_paths(dir_prefix, get_option('libexecdir'))
 dir_module_weston = join_paths(dir_lib, 'weston')
+dir_sysconfdir = join_paths(dir_prefix, get_option('sysconfdir'))
 
 gnome = import ('gnome')
 i18n = import ('i18n')
@@ -96,6 +97,14 @@ maynard_ini = configure_file(
     configuration: config_maynard,
     install: true,
     install_dir: join_paths(dir_data, 'maynard'),
+)
+
+maynard_menu_ini = configure_file(
+    input: 'maynard-applications.menu.in',
+    output: 'maynard-applications.menu',
+    configuration: config_maynard,
+    install: true,
+    install_dir: join_paths(dir_sysconfdir, 'xdg/menus/'),
 )
 
 subdir('data')
