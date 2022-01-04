@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+
+Exec=weston-launch
+Icon=weston-launch-icon.png
+
+Name=weston-launch

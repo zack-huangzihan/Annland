@@ -107,5 +107,6 @@ subdir('protocol')
 subdir('desktop-shell')
 subdir('client')
 subdir('po')
+subdir('applications')
 
 configure_file(output: 'config.h', install: false, configuration: config_h)

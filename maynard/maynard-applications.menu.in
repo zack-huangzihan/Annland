@@ -1,6 +1,12 @@
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
  "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
 
+  <!-- The default location of the file：
+  /usr/share/desktop-directories/
+  /usr/share/applications/
+  /etc/xdg/menus/maynard-applications.menu
+  -->
+
 <Menu>
 
   <Name>Applications</Name>
