@@ -1,0 +1,14 @@
+# Annland
+Annland is a pure Wayland desktop environment, based on Weston and Maynard.
+
+INSTALL:
+
+Weston and Maynard need to be pre-compiled in this repository, either for DPKG or meson. The detailed compilation method describes readme in the Maynard and Weston directories
+
+RUN:
+
+apt install --no-install-recommends adwaita-icon-theme bubblewrap dbus-user-session dconf-gsettings-backend dconf-service glib-networking glib-networking-common glib-networking-services gnome-desktop3-data gsettings-desktop-schemas gtk-update-icon-cache hicolor-icon-theme libasound2 libasound2-data libatk-bridge2.0-0 libatk1.0-0 libatk1.0-data libatspi2.0-0 libavahi-client3 libavahi-common-data libavahi-common3 libcups2 libdconf1 libepoxy0 libgnome-desktop-3-19 libgnome-menu-3-0 libgtk-3-0 libgtk-3-common libjson-glib-1.0-0 libjson-glib-1.0-common libproxy1v5 librest-0.7-0 libsoup-gnome2.4-1 libsoup2.4-1 libxcomposite1 libxdamage1 libxi6 libxinerama1 libxkbregistry0 libxrandr2
+
+export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-/var/run}
+export XDG_MENU_PREFIX=maynard-
+maynard &
