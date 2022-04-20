@@ -103,6 +103,19 @@ simple_clients = [
 	},
 	# weston-simple-im is handled specially separately due to install_dir and odd window.h usage
 	{
+		'name': 'myegl',
+		'sources': [
+			'opengles-simple-egl.c',
+			xdg_shell_client_protocol_h,
+			xdg_shell_protocol_c,
+			ivi_application_client_protocol_h,
+			ivi_application_protocol_c,
+		],
+		'dep_objs': [ dep_wayland_client, dep_libshared, dep_libm ],
+		'deps': [ 'egl', 'wayland-egl', 'glesv2', 'wayland-cursor' ],
+		'options': [ 'renderer-gl' ]
+	},
+	{
 		'name': 'shm',
 		'sources': [
 			'simple-shm.c',
