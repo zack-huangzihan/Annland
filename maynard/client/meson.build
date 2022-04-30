@@ -35,6 +35,7 @@ deps_maynard = [
     dep_gtk,
     dep_libm,
     dep_wayland_client,
+    dep_libshared,
 ]
 
 exe_maynard = executable(

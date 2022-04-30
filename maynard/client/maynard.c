@@ -30,6 +30,7 @@
 
 #include "weston-desktop-shell-client-protocol.h"
 #include "shell-helper-client-protocol.h"
+#include "desktop-shell/shared/config-parser.h"
 
 #include "maynard-resources.h"
 
@@ -402,18 +403,16 @@ scale_background (GdkPixbuf *original_pixbuf)
 }
 
 static void
-background_create (struct desktop *desktop)
+background_create (struct desktop *desktop, char* filename)
 {
   GdkWindow *gdk_window;
   struct element *background;
-  const gchar *filename;
   GdkPixbuf *unscaled_background;
   const gchar *xpm_data[] = {"1 1 1 1", "_ c SteelBlue", "_"};
 
   background = malloc (sizeof *background);
   memset (background, 0, sizeof *background);
 
-  filename = g_getenv ("MAYNARD_BACKGROUND");
   if (filename && filename[0] != '\0')
     unscaled_background = gdk_pixbuf_new_from_file (filename, NULL);
   else
@@ -677,11 +676,34 @@ static void grab_surface_create(struct desktop *desktop)
   weston_desktop_shell_set_grab_surface(desktop->wshell, grab->surface);
 }
 
+const char *
+maynard_config_get_name_from_env(void)
+{
+  const char *name;
+
+  name = getenv("WESTON_CONFIG_FILE");
+  if (name) {
+    printf("config file name = %s\n", name);
+    return name;
+  }
+
+  return "weston.ini";
+}
+
 int
 main (int argc,
     char *argv[])
 {
   struct desktop *desktop;
+  char *config_name;
+  char *background_image_src;
+  struct weston_config *maynard_config;
+  struct weston_config_section *shell_section;
+
+  config_name = maynard_config_get_name_from_env();
+  maynard_config = weston_config_parse(config_name);
+  shell_section = weston_config_get_section(maynard_config, "shell", NULL, NULL);
+  weston_config_section_get_string(shell_section, "background-image", &background_image_src, "");
 
   gdk_set_allowed_backends ("wayland");
 
@@ -725,7 +747,7 @@ main (int argc,
   desktop->pointer_out_of_panel = FALSE;
 
   css_setup (desktop);
-  background_create (desktop);
+  background_create (desktop, background_image_src);
   curtain_create (desktop);
 
   /* panel needs to be first so the launcher grid can

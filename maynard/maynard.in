@@ -3,7 +3,6 @@
 PREFIX=@prefix@
 LIBEXECDIR=@libexecdir@
 DATADIR=@datadir@/maynard
-DEFAULT_BACKGROUND=/usr/share/weston/background.png
 
 nested=
 display_server=
@@ -44,11 +43,6 @@ if [ "x$display_server" = "xtrue" -a "x$nested" = "xtrue" ]; then
 fi
 
 mkdir ~/.config > /dev/null 2>&1
-
-if [ -z "${MAYNARD_BACKGROUND+_}" -a \
-     -e "$DEFAULT_BACKGROUND" ]; then
-    export MAYNARD_BACKGROUND="$DEFAULT_BACKGROUND"
-fi
 
 if [ "x$display_server" = "xtrue" ]; then
     weston-launch -- --config $config_file

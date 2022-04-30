@@ -33,6 +33,8 @@ always-maximized=true
 #focus-animation=dim-layer
 #animation=zoom
 
+background-image=/usr/local/share/maynard/background.jpg
+
 [libinput]
 # Uncomment below to enable touch screen calibrator(weston-touch-calibrator)
 # touchscreen_calibrator=true

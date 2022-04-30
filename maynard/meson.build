@@ -102,6 +102,12 @@ maynard_menu_ini = configure_file(
     install_dir: join_paths(dir_sysconfdir, 'xdg/menus/'),
 )
 
+
+install_data(
+    join_paths('', 'background.jpg'),
+    install_dir: join_paths(dir_data, 'maynard')
+)
+
 subdir('data')
 subdir('protocol')
 subdir('desktop-shell')
